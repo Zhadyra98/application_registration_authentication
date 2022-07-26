@@ -17,9 +17,15 @@ function Login() {
       }),
     })
     const data = await response.json()
-    console.log(data);
-    
+    if(data.user) {
+      localStorage.setItem('token', data.user)
+      alert('Login successful')
+      window.location.href = '/dashboard'
+    }else{
+      alert('Please check your username and email')
+    }  
   }
+
   return (
     <div>
       <h1>Login</h1>
@@ -38,7 +44,7 @@ function Login() {
           placeholder='Password'
         />
         <br />
-        <input type="submit" value="Register"/>
+        <input type="submit" value="Login"/>
       </form>
     </div>
   );
