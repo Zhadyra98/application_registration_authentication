@@ -27,25 +27,33 @@ function Login() {
   }
 
   return (
-    <div>
+    <div className='form__container'>
+      <div className="form__content">
       <h1>Login</h1>
-      <form onSubmit={loginUser} action="">
+      <form onSubmit={loginUser}>
+        <label className = "form__label" htmlFor = "email" >email:</label>
+        <br/>
         <input 
+          id="email"
+          className='form-control'
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           type="email"
-          placeholder='Email'
         />
         <br />
-        <input 
+        <label className = "form__label" htmlFor="password" >Password:</label>
+        <br/>
+        <input
+          id="password" 
+          className='form-control'
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           type="password"
-          placeholder='Password'
         />
         <br />
-        <input className='btn btn-info' type="submit" value="Login"/>
+        <input className='btn form-btn' type="submit" value="Login"/>
       </form>
+    </div>
     </div>
   );
 }

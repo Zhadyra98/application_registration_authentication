@@ -22,37 +22,48 @@ function App() {
     })
     const data = await response.json()
     if(data.status === 'ok') {
-      history('/login')
+      history('/')
     }
     
   }
   return (
-    <div className='register__container'>
+    <div className='form__container'>
+      <div className="form__content">
       <h1>Register</h1>
-      <form onSubmit={registerUser} action="">
+      <form onSubmit={registerUser}>
+        <label className = "form__label" htmlFor = "name"> Name: </label>
+        <br/>
         <input 
+          id="name"
+          className='form-control'
           value={name}
           onChange={(e) => setName(e.target.value)}
           type="text"
-          placeholder='Name'
         />
         <br />
+        <label className = "form__label" htmlFor = "email" >email:</label>
+        <br/>
         <input 
+          id="email"
+          className='form-control'
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           type="email"
-          placeholder='Email'
         />
         <br />
+        <label className = "form__label" htmlFor="password" >Password:</label>
+        <br/>
         <input 
+          id="password"
+          className='form-control'
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           type="password"
-          placeholder='Password'
         />
         <br />
-        <input className='btn btn-info' type="submit" value="Register"/>
+        <input className='btn form-btn' type="submit" value="Register"/>
       </form>
+      </div>
     </div>
   );
 }
