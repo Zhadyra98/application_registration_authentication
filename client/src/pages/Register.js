@@ -27,7 +27,7 @@ function App() {
     
   }
   return (
-    <div>
+    <div className='register__container'>
       <h1>Register</h1>
       <form onSubmit={registerUser} action="">
         <input 
@@ -51,7 +51,7 @@ function App() {
           placeholder='Password'
         />
         <br />
-        <input type="submit" value="Register"/>
+        <input className='btn btn-info' type="submit" value="Register"/>
       </form>
     </div>
   );

@@ -44,7 +44,7 @@ function Login() {
           placeholder='Password'
         />
         <br />
-        <input type="submit" value="Login"/>
+        <input className='btn btn-info' type="submit" value="Login"/>
       </form>
     </div>
   );

@@ -9,6 +9,10 @@ app.use(cors())
 app.use(express.json())
 
 mongoose.connect('mongodb://localhost:27017/application')
+    .then(() => app.listen(1337, () => {
+        console.log('Server is running on port 1337')
+    }))
+    .catch((err) => console.log(err))
 
 app.post('/api/register', async (req, res) => {
     console.log(req.body)
@@ -40,6 +44,11 @@ app.post('/api/login', async (req, res) => {
             },
             'secret123'
         )
+        user.update({lastLoginTime: new Date() }, (err) => {
+            if (err){
+                console.log(err)
+            }
+        });
         return res.json({ status: 'ok', user: token})
     }else{
         return res.json({ status: 'error', user: false})
@@ -76,6 +85,21 @@ app.post('/api/dashboard', async (req, res) => {
     }
 })
 
-app.listen(1337, () => {
-    console.log('Server is running on 1337');
+app.get('/api/admin', async (req, res) => {
+    // const token = req.headers['x-access-token']
+    try{
+        // const decoded = jwt.verify(token, 'secret123')
+        // const email = decoded.email
+        // const user = await User.findOne({ email: email})
+
+        const resultTable = await User.find({}, 'id , name , email , lastLoginTime , registrationTime , isBlocked');
+        return res.json({ status: 'ok', table: resultTable})
+    }catch(error){
+        console.log(error)
+        res.json({ status: 'error', error: 'invalid token'})
+    }
 })
+
+// app.listen(1337, () => {
+//     console.log('Server is running on 1337');
+// })
