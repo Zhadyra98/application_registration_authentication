@@ -9,16 +9,19 @@ const createToken = (id) => {
 }
 
 module.exports.register_post = async (req, res) => {
+    res.cookie('newUser', false )
     console.log(req.body)
     try {
         const user = await User.create({
             name: req.body.name,
             email: req.body.email,
             password: req.body.password,
-        });
+        })
         const token = createToken(user._id)
-        res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge*1000});
+        console.log(token)
+        res.cookie('jwt', token);
         res.json({status: 'ok'})
+        res.cookie('newUser', false )
     } catch (err) {
         console.log(err)
         res.json({ status: 'error', error: 'Some error occured, duplicate email'})
@@ -26,26 +29,19 @@ module.exports.register_post = async (req, res) => {
 }
 
 module.exports.login_post = async (req, res) => {
-    const user = await User.findOne({
-        email: req.body.email,
-        password: req.body.password,
-    })
-
-    if (user) {
-        const token = jwt.sign(
-            {
-                name: user.name,
-                email: user.email
-            },
-            'secret123'
-        )
-        user.update({lastLoginTime: new Date() }, (err) => {
-            if (err){
-                console.log(err)
-            }
-        });
-        return res.json({ status: 'ok', user: token})
-    }else{
-        return res.json({ status: 'error', user: false})
+    const { email, password } = req.body;
+    try {
+        const user = await User.login(email, password)
+        // user.update({lastLoginTime: new Date() }, (err) => {
+        //     if (err){
+        //         console.log(err)
+        //     }
+        // });
+        const token = createToken(user._id)
+        res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge*1000});
+        res.status(200).json({user : user._id});
+    }
+    catch (err) {
+        res.status(400).json({});
     }
 }

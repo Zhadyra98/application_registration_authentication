@@ -14,9 +14,9 @@ function App() {
             <Header />         
                 <Router>
                     <Routes>
+                        <Route exact path="/" element={<Dashboard />} />
                         <Route exact path="/login" element={<Login />} />
                         <Route exact path="/register" element={<Register />} />
-                        <Route exact path="/dashboard" element={<Dashboard />} />
                         <Route exact path="/admin" element={<AdminPanel />} />
                     </Routes>
                 </Router>

@@ -3,7 +3,30 @@ import { useNavigate } from 'react-router-dom'
 import jwt from 'jwt-decode'
 
 function Dashboard () {
-    const history = useNavigate()
+    async function openAdminPage() {
+        const req = await fetch('http://localhost:1337/api/admin',{
+            headers: {
+                'Content-Type': 'application/json',
+              },
+        });
+        const data = await req.json()
+        if(data.status === 'ok') {
+            console.log("OKEY")
+        }else{
+            alert(data.error)
+        }
+    }
+    return (
+        <div>
+            <button className="btn" onClick={openAdminPage} >Open Table </button>
+        </div>
+    ) 
+}
+
+export default Dashboard
+
+/*
+const history = useNavigate()
     const [quote, setQuote] = useState('')
     const [tempQuote, setTempQuote] = useState('')
 
@@ -56,20 +79,4 @@ function Dashboard () {
             alert(data.error)
         }
     }
-    return (
-        <div>
-            <h1>Your quote: {quote || 'No quote found'}</h1>
-            <form onSubmit={updateQuote}>
-                <input 
-                    type="text"
-                    placeholder="Quote"
-                    value={tempQuote}
-                    onChange={(e) => setTempQuote(e.target.value)} 
-                />
-                <input type="submit" value="Update quote" />
-            </form>
-        </div>
-    ) 
-}
-
-export default Dashboard
+*/

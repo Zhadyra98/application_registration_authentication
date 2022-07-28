@@ -20,39 +20,39 @@ function Login() {
     if(data.user) {
       localStorage.setItem('token', data.user)
       alert('Login successful')
-      window.location.href = '/dashboard'
+      window.location.href = '/'
     }else{
       alert('Please check your username and email')
     }  
   }
 
   return (
-    <div className='form__container'>
-      <div className="form__content">
-      <h1>Login</h1>
-      <form onSubmit={loginUser}>
-        <label className = "form__label" htmlFor = "email" >email:</label>
-        <br/>
-        <input 
-          id="email"
-          className='form-control'
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          type="email"
-        />
-        <br />
-        <label className = "form__label" htmlFor="password" >Password:</label>
-        <br/>
-        <input
-          id="password" 
-          className='form-control'
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          type="password"
-        />
-        <br />
-        <input className='btn form-btn' type="submit" value="Login"/>
-      </form>
+    <div className='container'>
+      <div className="row justify-content-center align-items-center">
+        <div className="col-9 col-xs-8 col-sm-7 col-md-6 col-lg-4 text-center">
+        <h1 className='h2 mb-3 font-weight-normal'>Login</h1>
+        <form onSubmit={loginUser}>
+          <input 
+            className="form-control mb-2"
+            placeholder='Email Address'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            autoFocus
+          />
+          <input
+            className='form-control mb-2'
+            placeholder='Password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            autoFocus
+          />
+          <div className="mt-3">
+            <input className='btn btn-success btn-lg w-100' type="submit" value="Sign In"/>
+          </div>
+        </form>
+      </div>
     </div>
     </div>
   );
