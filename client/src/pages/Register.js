@@ -1,19 +1,19 @@
 import {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 
-function App() {
-  const history = useNavigate()
+function Register( { setUserName } ) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const navigate = useNavigate();
 
   async function registerUser(event) {
     event.preventDefault();
     const response = await fetch('http://localhost:1337/api/register', {
-    method: 'POST', 
-    headers: {
-        'Content-Type': 'application/json',
-      },
+      method: 'POST', 
+      headers: {
+          'Content-Type': 'application/json',
+        },
       body: JSON.stringify({
         name,
         email,
@@ -22,7 +22,10 @@ function App() {
     })
     const data = await response.json()
     if(data.status === 'ok') {
-      history('/')
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('name', data.name)
+      setUserName(data.name)
+      navigate("/");
     }
   }
   return (
@@ -63,9 +66,10 @@ function App() {
             type="password"
             autoFocus
           />
-          <div className="mt-3">
+          <div className="my-3">
             <input className='btn btn-success btn-lg w-100' type="submit" value="Sign Up"/>
           </div>
+          <a href="/login" className="link-success">Login</a>
           </form>
         </div>
       </div>
@@ -73,4 +77,4 @@ function App() {
   );
 }
 
-export default App;
+export default Register;

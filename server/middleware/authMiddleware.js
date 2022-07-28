@@ -1,22 +1,29 @@
 const jwt = require ('jsonwebtoken')
+const User = require('../models/user.model')
 
-const requireAuth = (req, res, next) => {
+const requireAuth = async (req, res, next) => {
+    let token
 
-    const token = req.cookies.jwt;
-    if (token) {
-        jwt.verify(token, 'secret for jwt', (err, decodedToken) => {
-            if (err) {
-                console.log(err.message);
-                res.redirect('/api/login');
-            } else {
-                console.log(decodedToken);
-                next();
-            }
-        })
+    if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        try {
+            token = req.headers.authorization.split(" ")[1]
+
+
+            const decoded = jwt.verify(token, 'secret for jwt')
+
+            req.user = await User.findById(decoded.id).select('-password')
+        
+            next();
+        } catch (error) {
+            console.log(error);
+            res.status(401)
+        }
     }
-    else {
-        res.redirect('/api/login');
+    if(!token) {
+        res.status(401)
+        
     }
+
 }
 
 module.exports = { requireAuth };

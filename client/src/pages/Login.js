@@ -1,8 +1,10 @@
 import {useState} from 'react'
+import { useNavigate } from 'react-router-dom'
 
-function Login() {
+function Login({ setUserName }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const navigate = useNavigate();
 
   async function loginUser(event) {
     event.preventDefault();
@@ -17,10 +19,11 @@ function Login() {
       }),
     })
     const data = await response.json()
-    if(data.user) {
-      localStorage.setItem('token', data.user)
-      alert('Login successful')
-      window.location.href = '/'
+    if(data.status === 'ok') {
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('name', data.name)
+      setUserName(data.name)
+      navigate("/");
     }else{
       alert('Please check your username and email')
     }  
@@ -48,9 +51,10 @@ function Login() {
             type="password"
             autoFocus
           />
-          <div className="mt-3">
+          <div className="my-3">
             <input className='btn btn-success btn-lg w-100' type="submit" value="Sign In"/>
           </div>
+          <a href="/register" className="link-success">Register</a>
         </form>
       </div>
     </div>
