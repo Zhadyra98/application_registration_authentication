@@ -1,4 +1,4 @@
-import { React, useState, useReducer } from "react";
+import React from "react";
 import { ReactComponent as Logo } from "../img/logo.svg"
 import { useNavigate } from 'react-router-dom'
 
