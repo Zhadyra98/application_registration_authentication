@@ -30,7 +30,7 @@ function Header({...props}) {
           <div className="gap-2 d-flex align-items-center">
             {props.userName ?
             (<>
-            <h5 className="h3 mx-3">Hi, {props.userName}</h5>
+            <h5 className="h4 mx-3 text-white">Hi, {props.userName}</h5>
             <button type="button" className="btn btn-outline-light rounded-pill px-4" onClick={logoutButtonHandle}>Logout</button>
             </>
             ):(

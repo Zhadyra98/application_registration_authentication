@@ -6,13 +6,14 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import AdminPanel from "./pages/AdminPanel";
 import Header from "./pages/Header";
+import { UserProvider } from './pages/UserContext';
 
 function App() {
     let [ userName, setUserName ] = useState(localStorage.getItem('name'))
     let props = { userName: userName,
     setUserName: setUserName}
     return (
-        <>      
+        <UserProvider>      
             <Router>
             <Header {...props} />   
                 <Routes>
@@ -21,7 +22,7 @@ function App() {
                     <Route exact path="/register" element={<Register setUserName = {setUserName} />} />
                 </Routes>
             </Router>
-        </>
+        </UserProvider>
     );
 }
 

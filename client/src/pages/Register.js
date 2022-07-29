@@ -5,10 +5,15 @@ function Register( { setUserName } ) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [passwordConfirm, setPasswordConfirm] =useState('')
   const navigate = useNavigate();
 
   async function registerUser(event) {
     event.preventDefault();
+    if(password !== passwordConfirm){
+      throw Error
+      console.log("Passwords are not same")
+    }
     const response = await fetch('http://localhost:1337/api/register', {
       method: 'POST', 
       headers: {
@@ -61,8 +66,8 @@ function Register( { setUserName } ) {
           <input 
             className='form-control'
             placeholder='Confirm Password'
-            // value={password}
-            // onChange={(e) => setPassword(e.target.value)}
+            value={passwordConfirm}
+            onChange={(e) => setPasswordConfirm(e.target.value)}
             type="password"
             autoFocus
           />

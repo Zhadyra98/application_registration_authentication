@@ -1,9 +1,10 @@
-import React, { useState} from "react";
+import React, { useState, useContext } from "react";
+import UserList from "./UserList";
+import { UserContext } from "./UserContext";
 import jwt from 'jwt-decode'
 
 function AdminPanel () {
-    const [table, setTable] = useState('')
-
+    const [userTable, setUserTable] = useContext(UserContext)
     async function getAdminTable() {
         const req = await fetch('http://localhost:1337/api/admin',{
             headers: {
@@ -14,7 +15,7 @@ function AdminPanel () {
         if(data.status === 'ok'){
             // console.log(data.table)
             // console.log(Array.isArray(data.table));
-            setTable(data.table)
+            setUserTable(data.table)
         }
         else{
             alert(data.error)
@@ -36,34 +37,11 @@ function AdminPanel () {
         }
 
     }
-    if (!table) {
-        return(
-            <><button className="btn btn-success" onClick={openTableHandle} >Open Table </button>
-            <div>Loading...</div></>
 
-        )
-    }else{
-        console.log('data yes');
-        
-        return (
-            <div> 
-                <table className="table">
-                <thead className="thead-dark">
-                    <tr>
-                    {Object.keys(table[0]).map((heading) => <th>{heading}</th>)}
-                    </tr>
-                </thead>
-                <tbody>
-                    {table.map((row) => (
-                    <tr>
-                        {Object.keys(table[0]).map((heading) => <td>{row[heading]}</td>)}
-                    </tr>
-                    ))}
-                </tbody>
-                </table>     
-            </div>
-        )
-    }
+
+    return (
+        userTable ? <UserList/> : <div className="container my-auto text-center"><button className="btn btn-success" onClick={openTableHandle} >Open Table </button></div>
+    )
 }
 
 export default AdminPanel
