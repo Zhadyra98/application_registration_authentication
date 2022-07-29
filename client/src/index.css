@@ -42,3 +42,6 @@ code {
 .idText:hover .idTextHide {
   visibility: visible;
 }
+tr:hover {
+  background-color: #d1e7dd;
+}
