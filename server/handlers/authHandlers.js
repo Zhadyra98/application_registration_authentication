@@ -6,20 +6,22 @@ const maxAge = 3 * 24 * 60 * 60;
 const createToken = (id, email) => {
     return jwt.sign({ id, email }, 'secret for jwt');
 }
+const handleErrors = (err) => {
+    return err.message;
+}
 
 module.exports.register_post = async (req, res) => {
-    console.log(req.body)
     try {
         const user = await User.create({
             name: req.body.name,
             email: req.body.email,
             password: req.body.password,
         })
+        const resultTable = await User.find({}, 'id , name , email , lastLoginTime , registrationTime , isBlocked');
         const token = createToken(user._id, user.email)
-        res.json({ status: 'ok', token : token, name: user.name });
+        res.json({ status: 'ok', token : token, name: user.name, table: resultTable });
     } catch (err) {
-        console.log(err)
-        res.json({ status: 'error', error: 'Some error occured, duplicate email'})
+        res.json({ status: 'error', error: 'This email is already registred, try to log in'})
     }
 }
 
@@ -36,6 +38,7 @@ module.exports.login_post = async (req, res) => {
         res.json({ status: 'ok', token : token, name: user.name });
     }
     catch (err) {
-        res.status(400).json({});
+        const errors = handleErrors(err);
+        res.status(400).json({ errors });
     }
 }

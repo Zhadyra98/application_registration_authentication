@@ -36,13 +36,17 @@ User.pre('save', async function (next) {
 User.statics.login = async function (email, password) {
     const user = await this.findOne({ email });
     if (user) {
-        const auth = await bcrypt.compare(password, user.password)
-        if (auth) {
-            return user;
-        } 
-        throw Error ('incorrect password')
+        if(!user.isBlocked){
+            const auth = await bcrypt.compare(password, user.password)
+            if (auth) {
+                return user;
+            }else{
+                throw Error ('incorrect password')
+            } 
+        }else throw Error ('user is blocked')
+    }else{
+        throw Error ('incorrect email')
     }
-    throw Error ('incorrect email')
 }
 
 const model = mongoose.model('UserData', User)

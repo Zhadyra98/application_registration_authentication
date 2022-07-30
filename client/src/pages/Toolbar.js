@@ -2,9 +2,11 @@ import React, { useContext} from "react";
 import { MdDeleteForever } from 'react-icons/md'
 import { VscUnlock } from 'react-icons/vsc'
 import { UserContext } from "./UserContext";
+import { useNavigate } from 'react-router-dom'
 
-const Toolbar = () => {
+const Toolbar = ( {...props} ) => {
     const [userTable, setUserTable] = useContext(UserContext)
+    let navigate = useNavigate();
 
     const getCheckedUsersList = () => {
         const checkedUsers = [];
@@ -21,6 +23,7 @@ const Toolbar = () => {
             method: 'PUT', 
             headers: {
                 'Content-Type': 'application/json',
+                'x-access-token': localStorage.getItem('token'),
             },
             body: JSON.stringify({
                 users,
@@ -32,8 +35,11 @@ const Toolbar = () => {
             console.log("ok")
             toggleBlock(type);
         }
-        else{
-            alert(data.error)
+        else{ 
+            props.setUserName('')
+            localStorage.removeItem('token')
+            localStorage.removeItem('name')
+            navigate("/login")
         }
     }
 
@@ -44,6 +50,7 @@ const Toolbar = () => {
             method: 'DELETE', 
             headers: {
                 'Content-Type': 'application/json',
+                'x-access-token': localStorage.getItem('token'),
             },
             body: JSON.stringify({
                 users,
@@ -54,7 +61,10 @@ const Toolbar = () => {
             setUserTable(data.table.map(item => ({...item, "isChecked": false})))
         }
         else{
-            alert(data.error)
+            props.setUserName('')
+            localStorage.removeItem('token')
+            localStorage.removeItem('name')
+            navigate("/login")
         }
     }
 

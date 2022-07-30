@@ -10,14 +10,16 @@ import { UserProvider } from './pages/UserContext';
 
 function App() {
     let [ userName, setUserName ] = useState(localStorage.getItem('name'))
-    let props = { userName: userName,
-    setUserName: setUserName}
+    let props = { 
+        userName: userName,
+        setUserName: setUserName
+    }
     return (
         <UserProvider>      
             <Router>
             <Header {...props} />   
                 <Routes>
-                    <Route exact path="/" element={<AdminPanel />} />
+                    <Route exact path="/" element={<AdminPanel {...props} />} />
                     <Route exact path="/login" element={<Login setUserName = {setUserName} />} />
                     <Route exact path="/register" element={<Register setUserName = {setUserName} />} />
                 </Routes>

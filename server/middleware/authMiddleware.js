@@ -3,27 +3,33 @@ const User = require('../models/user.model')
 
 const requireAuth = async (req, res, next) => {
     let token
-
-    if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    if(req.headers['x-access-token']) {
         try {
-            token = req.headers.authorization.split(" ")[1]
-
-
+            token = req.headers['x-access-token']
             const decoded = jwt.verify(token, 'secret for jwt')
-
             req.user = await User.findById(decoded.id).select('-password')
-        
-            next();
+            if(req.user){
+                next();
+            }
+            else{
+                res.json({ status:'deleted', error: 'This User was deleted, you can register again'})
+            }
         } catch (error) {
-            console.log(error);
-            res.status(401)
+            res.json({ status: 401, error: 'Please, login or register first'})
         }
     }
     if(!token) {
-        res.status(401)
-        
+        res.json({ status: 401, error: 'Please, login or register first'})
     }
-
 }
 
-module.exports = { requireAuth };
+const requireNotBlocked = async (req, res, next) => {
+    try {
+        if(!req.user.isBlocked) next()
+        else res.json({ status: 'blocked', error: 'This User is Blocked'})
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports = { requireAuth, requireNotBlocked };

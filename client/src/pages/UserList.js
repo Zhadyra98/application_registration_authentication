@@ -2,7 +2,7 @@ import React, { useContext} from "react";
 import UserItem from './UserItem'
 import { UserContext } from "./UserContext";
 
-const UserList = ({onToggleDone}) => {
+const UserList = ({onToggleCheck}) => {
     const [userTable, setUserTable] = useContext(UserContext)
     const toggleSelectAll = (event) => {
         setUserTable(prev => prev.map(item => {
@@ -32,7 +32,7 @@ const UserList = ({onToggleDone}) => {
                         registrationTime={item.registrationTime} 
                         isBlocked={item.isBlocked}
                         isChecked={item.isChecked}
-                        onToggleDone={() => onToggleDone(item._id)}
+                        onToggleCheck={() => onToggleCheck(item._id)}
                         />
                     ))}
                 </tbody>

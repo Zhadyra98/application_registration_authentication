@@ -2,14 +2,13 @@ import React, { useState, useContext } from "react";
 import { UserContext } from "./UserContext";
 
 
-const UserItem = ({ id, name, email, lastLoginTime, registrationTime, isBlocked, isChecked, onToggleDone }) => {
+const UserItem = ({ id, name, email, lastLoginTime, registrationTime, isBlocked, isChecked, onToggleCheck }) => {
     
     const formatDate = (date) => (new Date(date).toUTCString()).substr(5,20);
 
-
     return(
         <>
-        <tr onClick={ onToggleDone }>
+        <tr onClick={ onToggleCheck }>
             <td>
                 <input className="form-check-input-lg" type="checkbox" checked={isChecked} id="checkboxNoLabel"aria-label="..." readOnly />
             </td>

@@ -1,44 +1,48 @@
-import {useState} from 'react'
+import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { UserContext } from "./UserContext";
+
 
 function Register( { setUserName } ) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [errorText, setError] = useState('')
+  const [userTable, setUserTable] = useContext(UserContext)
   const [passwordConfirm, setPasswordConfirm] =useState('')
   const navigate = useNavigate();
 
   async function registerUser(event) {
     event.preventDefault();
-    if(password !== passwordConfirm){
-      throw Error
-      console.log("Passwords are not same")
+    if(password === passwordConfirm){
+      const response = await fetch('http://localhost:1337/api/register', {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json',
+          },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      })
+      const data = await response.json()
+      if(data.status === 'ok') {
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('name', data.name)
+        setUserName(data.name)
+        setUserTable(data.table)
+        navigate("/");
+      } 
     }
-    const response = await fetch('http://localhost:1337/api/register', {
-      method: 'POST', 
-      headers: {
-          'Content-Type': 'application/json',
-        },
-      body: JSON.stringify({
-        name,
-        email,
-        password,
-      }),
-    })
-    const data = await response.json()
-    if(data.status === 'ok') {
-      localStorage.setItem('token', data.token)
-      localStorage.setItem('name', data.name)
-      setUserName(data.name)
-      navigate("/");
-    }
+    else setError('Passwords are not same')
   }
   return (
     <div className='container'>
       <div className="row justify-content-center align-items-center">
         <div className="col-9 col-xs-8 col-sm-7 col-md-6 col-lg-4 text-center">
         <h1 className='h2 mb-3 font-weight-normal'>Register</h1>
-        <form onSubmit={registerUser}>
+        <form onSubmit={registerUser} onChange = {() => setError('')}>
           <input 
             className="form-control mb-2"
             placeholder='Name'
@@ -71,6 +75,7 @@ function Register( { setUserName } ) {
             type="password"
             autoFocus
           />
+          <p className='error h6 text-danger mt-2'>{errorText}</p>
           <div className="my-3">
             <input className='btn btn-success btn-lg w-100' type="submit" value="Sign Up"/>
           </div>
