@@ -14,29 +14,32 @@ function Register( { setUserName } ) {
 
   async function registerUser(event) {
     event.preventDefault();
-    if(password === passwordConfirm){
-      const response = await fetch('http://localhost:1337/api/register', {
-        method: 'POST', 
-        headers: {
-            'Content-Type': 'application/json',
-          },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-        }),
-      })
-      const data = await response.json()
-      if(data.status === 'ok') {
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('name', data.name)
-        setUserName(data.name)
-        setUserTable(data.table)
-        navigate("/");
-      } 
-      else setError(data.error)
+    if(name && email && password && passwordConfirm){
+      if(password === passwordConfirm){
+        const response = await fetch('http://localhost:1337/api/register', {
+          method: 'POST', 
+          headers: {
+              'Content-Type': 'application/json',
+            },
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+          }),
+        })
+        const data = await response.json()
+        if(data.status === 'ok') {
+          localStorage.setItem('token', data.token)
+          localStorage.setItem('name', data.name)
+          setUserName(data.name)
+          setUserTable(data.table)
+          navigate("/");
+        } 
+        else setError(data.error)
+      }
+      else setError('The passwords do not match')
     }
-    else setError('Passwords are not same')
+    else setError('Please fill out all fields and try again')
   }
   return (
     <div className='container'>

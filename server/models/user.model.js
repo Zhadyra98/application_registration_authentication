@@ -41,11 +41,11 @@ User.statics.login = async function (email, password) {
             if (auth) {
                 return user;
             }else{
-                throw Error ('incorrect password')
+                throw Error ('Incorrect email and password')
             } 
         }else throw Error ('user is blocked')
     }else{
-        throw Error ('incorrect email')
+        throw Error ('Incorrect email and password')
     }
 }
 

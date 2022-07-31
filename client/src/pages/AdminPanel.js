@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import UserItem from './UserItem'
 import Toolbar from "./Toolbar";
 import { UserContext } from "./UserContext";
-import jwt from 'jwt-decode'
 
 function AdminPanel ({...props}) {
     const [userTable, setUserTable] = useContext(UserContext)
     const [isLoading, setIsLoading] = useState(true);
+
     const toggleSelectAll = (event) => {
         setUserTable(prev => prev.map(item => {
             return {...item, isChecked: event.target.checked}
@@ -25,9 +25,6 @@ function AdminPanel ({...props}) {
                 setUserTable(data.table.map(item => ({...item, "isChecked": false})))
                 setIsLoading(false)
             }
-            else{
-                alert(data.error)
-            }
         };
         fetchData();
     }, []); 
@@ -45,12 +42,12 @@ function AdminPanel ({...props}) {
     }
     return (
         <>
-            <Toolbar {...props} />
+            <Toolbar {...props } />
             <div className="container-fluid"> 
                 <table className="table table-bordered">
                     <tbody>
                         <tr className="table-success">
-                            <th><input className="form-check-input" type="checkbox" id="checkboxNoLabel" value="" onChange={toggleSelectAll} aria-label="..."/></th>
+                            <th><input className="form-check-input" type="checkbox" id="checkboxNoLabel2" value="" onChange={(e) => toggleSelectAll(e)} aria-label="..."/></th>
                             <th className="d-none d-md-table-cell">ID</th>
                             <th className="d-none d-sm-table-cell">Name</th>
                             <th>Email</th>

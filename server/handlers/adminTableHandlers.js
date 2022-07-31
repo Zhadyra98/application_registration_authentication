@@ -44,11 +44,11 @@ module.exports.table_delete = async (req, res) => {
         }).catch(function(error){
             console.log(error); 
         });
-        const resultTable = await User.find({}, 'id , name , email , lastLoginTime , registrationTime , isBlocked');
+        const table = await User.find({}, 'id , name , email , lastLoginTime , registrationTime , isBlocked');
         if(users.includes(userID)){
             res.json({ status: 'error', error: 'Your account was deleted'})
         }else{
-            res.json({ status: 'ok', table: resultTable, text: 'Users are deleted'})
+            res.json({ status: 'ok', table: table, text: 'Users are deleted'})
         }     
     }catch(error){
         console.log(error)

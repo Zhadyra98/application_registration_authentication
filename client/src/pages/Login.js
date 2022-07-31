@@ -1,35 +1,37 @@
 import {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 
-function Login({ setUserName }) {
+function Login({ setUserName } ) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errorText, setError] = useState('')
   const navigate = useNavigate();
   
-
   async function loginUser(event) {
     event.preventDefault();
-    const response = await fetch('http://localhost:1337/api/login', {
-    method: 'POST', 
-    headers: {
-        'Content-Type': 'application/json',
-        'x-access-token': localStorage.getItem('token'),
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    })
-    const data = await response.json()
-    if(data.status === 'ok') {
-      localStorage.setItem('token', data.token)
-      localStorage.setItem('name', data.name)
-      setUserName(data.name)
-      navigate("/");
-    }else{
-      setError(data.errors)
-    }  
+    if(email && email){
+      const response = await fetch('http://localhost:1337/api/login', {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json',
+            'x-access-token': localStorage.getItem('token'),
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        })
+        const data = await response.json()
+        if(data.status === 'ok') {
+          localStorage.setItem('token', data.token)
+          localStorage.setItem('name', data.name)
+          setUserName(data.name)
+          navigate("/");
+        }else{
+          setError(data.errors)
+        }  
+    }
+    else setError('Enter you email and password')
   }
 
   return (

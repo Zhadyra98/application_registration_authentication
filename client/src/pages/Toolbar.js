@@ -31,8 +31,8 @@ const Toolbar = ( {...props} ) => {
             }),
         })
         const data = await response.json()
+        document.querySelector('#checkboxNoLabel2').checked = false;
         if(data.status === 'ok'){ 
-            console.log("ok")
             toggleBlock(type);
         }
         else{ 
@@ -68,6 +68,7 @@ const Toolbar = ( {...props} ) => {
             localStorage.removeItem('name')
             navigate("/login")
         }
+        document.querySelector('#checkboxNoLabel2').checked = false;
     }
 
     const toggleBlock = (type) => {

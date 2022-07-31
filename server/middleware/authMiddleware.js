@@ -27,7 +27,7 @@ const requireAuth = async (req, res, next) => {
 const requireNotBlocked = async (req, res, next) => {
     try {
         if(!req.user.isBlocked) next();
-        else res.json({ status: 'blocked', error: 'This User is Blocked'})
+        else res.json({ status: 'blocked', error: 'Your account was Blocked'})
     } catch (error) {
         console.log(error);
     }
