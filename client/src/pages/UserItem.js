@@ -19,7 +19,8 @@ const UserItem = ({ id, name, email, lastLoginTime, registrationTime, isBlocked,
             <td>{email}</td>
             <td className="d-none d-md-table-cell" >{formatDate(lastLoginTime)}</td>
             <td className="d-none d-md-table-cell" >{formatDate(registrationTime)}</td>
-            <td>{isBlocked ? 'blocked' : 'active'}</td>
+            {isBlocked ? <td className="bg-danger text-white">BLOCKED</td> : <td className="bg-success text-white">ACTIVE</td>}
+            
         </tr>
         </>
         

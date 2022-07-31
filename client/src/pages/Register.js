@@ -34,6 +34,7 @@ function Register( { setUserName } ) {
         setUserTable(data.table)
         navigate("/");
       } 
+      else setError(data.error)
     }
     else setError('Passwords are not same')
   }

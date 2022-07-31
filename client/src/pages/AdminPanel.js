@@ -1,40 +1,37 @@
-import React, { useContext, useState } from "react";
-import UserList from "./UserList";
+import React, { useContext, useEffect, useState } from "react";
+import UserItem from './UserItem'
 import Toolbar from "./Toolbar";
 import { UserContext } from "./UserContext";
 import jwt from 'jwt-decode'
 
 function AdminPanel ({...props}) {
     const [userTable, setUserTable] = useContext(UserContext)
-    async function getAdminTable() {
-        const req = await fetch('http://localhost:1337/api/admin',{
-            headers: {
-                'x-access-token': localStorage.getItem('token'),
-            },
-        });
-        const data = await req.json()
-        if(data.status === 'ok'){ 
-            setUserTable(data.table.map(item => ({...item, "isChecked": false})))
-        }
-        else{
-            alert(data.error)
-        }
+    const [isLoading, setIsLoading] = useState(true);
+    const toggleSelectAll = (event) => {
+        setUserTable(prev => prev.map(item => {
+            return {...item, isChecked: event.target.checked}
+        }))
     }
-    function openTableHandle() {        
-        const token = localStorage.getItem('token')
-        if(token) {
-            const user = jwt(token)
-            if(!user) {
-                localStorage.removeItem('token')
-                localStorage.removeItem('name')
-                window.location.href = '/login';
-            }else {
-                getAdminTable();
+    useEffect(() => {
+        const url = 'http://localhost:1337/api/admin';
+        const fetchData = async() => {
+            const req = await fetch(url,{
+                headers: {
+                    'x-access-token': localStorage.getItem('token'),
+                },
+            });
+            const data = await req.json()
+            if(data.status === 'ok'){ 
+                setUserTable(data.table.map(item => ({...item, "isChecked": false})))
+                setIsLoading(false)
             }
-        }else{
-            window.location.href = '/login';
-        }
-    }
+            else{
+                alert(data.error)
+            }
+        };
+        fetchData();
+    }, []); 
+
     const onToggleCheck = (id) => {
         setUserTable(prev => prev.map(item => {
             if(item._id===id){
@@ -43,13 +40,43 @@ function AdminPanel ({...props}) {
             return item
         }))
     }
-
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
     return (
-        userTable ? 
-        <><Toolbar {...props} /><UserList onToggleCheck={onToggleCheck} /></>  : 
-        <div className="container my-auto text-center">
-            <button className="btn btn-success" onClick={openTableHandle} >Open Table </button>
-        </div>
+        <>
+            <Toolbar {...props} />
+            <div className="container-fluid"> 
+                <table className="table table-bordered">
+                    <tbody>
+                        <tr className="table-success">
+                            <th><input className="form-check-input" type="checkbox" id="checkboxNoLabel" value="" onChange={toggleSelectAll} aria-label="..."/></th>
+                            <th className="d-none d-md-table-cell">ID</th>
+                            <th className="d-none d-sm-table-cell">Name</th>
+                            <th>Email</th>
+                            <th className="d-none d-md-table-cell">Last Login Time</th>
+                            <th className="d-none d-md-table-cell">Registration Time</th>  
+                            <th>Status</th>                 
+                        </tr>
+                        {
+                            userTable.map((item) => (
+                                <UserItem 
+                                key = {item._id}
+                                id={item._id} 
+                                name={item.name} 
+                                email={item.email} 
+                                lastLoginTime={item.lastLoginTime} 
+                                registrationTime={item.registrationTime} 
+                                isBlocked={item.isBlocked}
+                                isChecked={item.isChecked}
+                                onToggleCheck={() => onToggleCheck(item._id)}
+                                />
+                            ))
+                        } 
+                    </tbody>
+                </table>     
+            </div>
+        </>
     )
 }
 

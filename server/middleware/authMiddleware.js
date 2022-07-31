@@ -8,7 +8,8 @@ const requireAuth = async (req, res, next) => {
             token = req.headers['x-access-token']
             const decoded = jwt.verify(token, 'secret for jwt')
             req.user = await User.findById(decoded.id).select('-password')
-            if(req.user){
+            if(req.user){                
+                req.body.userID = req.user._id.toString();
                 next();
             }
             else{
@@ -25,7 +26,7 @@ const requireAuth = async (req, res, next) => {
 
 const requireNotBlocked = async (req, res, next) => {
     try {
-        if(!req.user.isBlocked) next()
+        if(!req.user.isBlocked) next();
         else res.json({ status: 'blocked', error: 'This User is Blocked'})
     } catch (error) {
         console.log(error);

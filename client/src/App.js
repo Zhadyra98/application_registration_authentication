@@ -7,6 +7,7 @@ import Register from './pages/Register'
 import AdminPanel from "./pages/AdminPanel";
 import Header from "./pages/Header";
 import { UserProvider } from './pages/UserContext';
+import PrivateRoutes from './utils/PrivateRoutes'
 
 function App() {
     let [ userName, setUserName ] = useState(localStorage.getItem('name'))
@@ -19,9 +20,11 @@ function App() {
             <Router>
             <Header {...props} />   
                 <Routes>
-                    <Route exact path="/" element={<AdminPanel {...props} />} />
-                    <Route exact path="/login" element={<Login setUserName = {setUserName} />} />
-                    <Route exact path="/register" element={<Register setUserName = {setUserName} />} />
+                    <Route element={<PrivateRoutes />}>
+                        <Route element={<AdminPanel {...props}/>} path="/" exact/>
+                    </Route>
+                    <Route path="/login" element={<Login setUserName = {setUserName} />} />
+                    <Route path="/register" element={<Register setUserName = {setUserName} />} />
                 </Routes>
             </Router>
         </UserProvider>
