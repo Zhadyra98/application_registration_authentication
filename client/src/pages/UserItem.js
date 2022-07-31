@@ -1,5 +1,4 @@
-import React, { useState, useContext } from "react";
-import { UserContext } from "./UserContext";
+import React from "react";
 
 
 const UserItem = ({ id, name, email, lastLoginTime, registrationTime, isBlocked, isChecked, onToggleCheck }) => {
