@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
-mongoose.connect('mongodb://localhost:27017/application')
+mongoose.connect('mongodb+srv://Zhadyra:itisNew123!@usermanagement.n4kaxaj.mongodb.net/application')
     .then(() => app.listen(process.env.PORT || 1337, () => {
         console.log('Server is running')
     }))

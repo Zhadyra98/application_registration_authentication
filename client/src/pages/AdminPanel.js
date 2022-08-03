@@ -27,7 +27,7 @@ function AdminPanel ({...props}) {
             }
         };
         fetchData();
-    }, []); 
+    }, [] ); 
 
     const onToggleCheck = (id) => {
         setUserTable(prev => prev.map(item => {

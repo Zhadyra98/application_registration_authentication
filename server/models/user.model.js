@@ -49,6 +49,6 @@ User.statics.login = async function (email, password) {
     }
 }
 
-const model = mongoose.model('UserData', User)
+const model = mongoose.model('user-data', User)
 
 module.exports = model

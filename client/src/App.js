@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import { BrowserRouter as Router, Route , Routes} from "react-router-dom";
 import Login from './pages/Login'
 import Register from './pages/Register'
